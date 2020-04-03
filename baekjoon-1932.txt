@@ -1,0 +1,33 @@
+import java.util.*;
+
+public class Main{
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        
+        int n = sc.nextInt();
+        // 2차원 배열 생성
+        int[][] arr = new int[n+1][n+1];
+        int sum = 0;
+        
+        for(int i=1; i<=n; i++){
+            for(int j=1; j<=i; j++){
+                arr[i][j] = sc.nextInt();
+                // 왼쪽으로만 내려갈 경우, (1,1) (2,1) (3,1) (4,1) ... 
+                if(j == 1){
+                    arr[i][j] = arr[i-1][j] + arr[i][j];
+                } 
+                // 오른쪽으로만 내려갈 경우, (1,1) (2,2) (3,3) (4,4) ...
+                else if(j == i){
+                    arr[i][j] = arr[i-1][j-1] + arr[i][j];
+                } 
+                // 가운데로 내려갈 경우, 예) (5,4) = Math.max((4,4), (4,3)) ...
+                else{
+                    arr[i][j] = Math.max(arr[i-1][j-1], arr[i-1][j]) + arr[i][j];
+                }
+                if(arr[i][j] > sum)
+                    sum = arr[i][j];
+            }
+        }
+        System.out.println(sum);
+    }
+}
