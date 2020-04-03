@@ -1,0 +1,23 @@
+import java.util.*;
+
+public class Main{
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        int T = sc.nextInt();
+        int[] arr = new int[T];
+        long[] P = new long[101];
+        // arr[0]=6, arr[1]=12
+        for(int i=0; i<T; i++){
+            arr[i] = sc.nextInt();
+        }
+        P[0] = 1;
+        P[1] = 1;
+        P[2] = 1;
+        for(int i=3; i<P.length; i++){
+            P[i] = P[i-2] + P[i-3];
+        }
+        for(int i=0; i<T; i++){
+            System.out.println(P[arr[i]-1]);
+        }
+    }
+}
