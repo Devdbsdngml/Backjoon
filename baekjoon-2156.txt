@@ -1,0 +1,40 @@
+import java.util.*;
+
+public class Main{
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int[] wine = new int[n];
+        int[] dp = new int[n];
+        
+        for(int i=0; i<n; i++){
+            wine[i] = sc.nextInt();
+        }
+        
+        dp[0] = wine[0];
+        
+        // 와인이 3잔 이상일 때부터
+        // 연속 3잔을 먹을 수 없다는 조건을 생각하면
+        if(n>2){
+            dp[1] = wine[0] + wine[1];
+            dp[2] = Math.max(dp[1], Math.max(wine[0]+wine[2], wine[1]+wine[2]));
+            for(int i=3; i<n; i++){
+                // 마지막잔(n)을 마셨을 때
+                // n-1을 마셨을 경우와 안 마셨을 경우로 나누어서 점화식 만듦
+                dp[i] = Math.max(dp[i-2]+wine[i], dp[i-3]+wine[i-1]+wine[i]);
+                // *마지막잔(n)을 안 마셨을 때
+                // n-1과 n-2을 마시고 n+1 혹은 n+2을 마실 수 있다
+                dp[i] = Math.max(dp[i], dp[i-1]);
+            }
+            System.out.println(dp[n-1]);
+        }
+        // 와인이 2잔일 때
+        else if(n==2){
+            System.out.println(wine[0]+wine[1]);
+        }
+        // 와인이 1잔일 때
+        else if(n==1){
+            System.out.println(wine[0]);
+        }
+    }
+}
