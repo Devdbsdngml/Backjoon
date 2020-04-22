@@ -1,0 +1,38 @@
+import java.util.*;
+import java.io.*;
+
+public class Main{
+    public static void main(String[] args){
+        /*
+        자연수 n의 제일 작은 분해합은
+        자연수 n에서 각 자릿수에서 가장 큰 9의 자릿수 개수만큼 곱한 값을 뺀 값보다 작을 수 없다
+        
+        예를 들어, 3자리 자연수 216은 216-(9*3) = 189 이므로 189보다 작을 수는 없다는 얘기다
+        즉, 189부터 하나씩 조사하다가 일치하면 멈추면 된다
+        */
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int answer = solution(n);
+        System.out.println(answer);
+    }
+    
+    public static int solution(int n){
+        int nSize = String.valueOf(n).length();
+        int min = n-(nSize*9);
+        int result = 0;
+        
+        for(int i=min; i<n; i++){
+            int sum = i;
+            int eachDigit = i;
+            while(eachDigit>0){
+                sum += eachDigit%10;
+                eachDigit /= 10;
+            }
+            if(sum == n){
+                result = i;
+                break;
+            }
+        }
+        return result;
+    }
+}
