@@ -1,0 +1,35 @@
+import java.util.*;
+import java.io.*;
+
+public class Main{
+    public static void main(String[] args){
+        Main main = new Main();
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int m = sc.nextInt();
+        int[] cards = new int[n];
+        int answer = 0;
+        
+        for(int i=0; i<cards.length; i++){
+            cards[i] = sc.nextInt();
+        }
+        answer = main.solution(n, m, cards);
+        System.out.println(answer);
+    }
+    
+    public int solution(int n, int m, int[] cards){
+        int max = 0;
+        int temp = 0;
+        for(int i=0; i<cards.length-2; i++){
+            for(int j=i+1; j<cards.length-1; j++){
+                for(int k=j+1; k<cards.length; k++){
+                    temp = cards[i] + cards[j] + cards[k];
+                    if(temp <= m && temp > max){
+                        max = temp;
+                    }
+                }
+            }
+        }
+        return max;
+    }
+}
