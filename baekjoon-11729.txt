@@ -1,0 +1,33 @@
+import java.util.*;
+import java.io.*;
+
+public class Main{
+    
+    public static StringBuilder sb = new StringBuilder();
+    public static int count = 0;
+    
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        Solution(n, 1, 2, 3);
+        sb.insert(0, count+"\n");
+        System.out.println(sb.toString());
+    }
+    
+    public static void Solution(int n, int a, int b, int c){
+        ++count;
+        if(n == 1){
+            sb.append(a+" "+c+"\n");
+        }
+        else{
+            /*
+            1. a -> b
+            2. a -> c
+            3. b -> c
+            */
+            Solution(n-1, a, c, b);
+            sb.append(a+" "+c+"\n");
+            Solution(n-1, b, a, c);
+        }
+    }
+}
