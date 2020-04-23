@@ -1,0 +1,30 @@
+import java.util.*;
+import java.io.*;
+
+public class Main{
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        
+        int n = Integer.parseInt(br.readLine());
+        int[] arr = new int[10001];
+        
+        /*
+         counting sort
+         계수정렬 : 원소들을 비교하는 것이 아니라 개수를 세서 정렬을 하는 것
+        */
+        for(int i=0; i<n; i++){
+            int a = Integer.parseInt(br.readLine());
+            if(a>0 && a<10001){
+                arr[a]++;
+            }
+        }
+        
+        for(int i=1; i<10001; i++){
+            for(int j=0; j<arr[i]; j++){
+                bw.write(i+"\n");
+            }
+        }
+        bw.flush();
+    }
+}
