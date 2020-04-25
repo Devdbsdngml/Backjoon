@@ -1,0 +1,42 @@
+import java.util.*;
+import java.io.*;
+
+public class Main{    
+    public static BufferedReader br;
+    public static BufferedWriter bw;
+    
+    public static void main(String[] args) throws IOException{
+        br = new BufferedReader(new InputStreamReader(System.in));
+        bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        int n = Integer.parseInt(br.readLine());
+        // 중복을 담지 않기 위해 HashSet 사용
+        Set<String> hs = new HashSet<String>();
+        
+        for(int i=0; i<n; i++){
+            hs.add(br.readLine());
+        }
+        
+        // HashSet의 원소들을 ArrayList에 담아줌
+        List<String> str = new ArrayList<String>();
+        str.addAll(hs);
+        
+        Collections.sort(str, new Comparator<String>(){
+            @Override
+            public int compare(String a, String b){
+                // 길이 순서대로 정렬
+                if(a.length() > b.length())
+                    return 1;
+                else if(a.length() < b.length())
+                    return -1;
+                // 길이가 같은 문자열은 알파벳 순서대로 정렬
+                else
+                    return a.compareTo(b);
+            }
+        });
+        
+        for(String s : str){
+            bw.write(s+"\n");
+        }
+        bw.flush();
+    }
+}
