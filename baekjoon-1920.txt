@@ -37,3 +37,28 @@ public class Main{
         return 0;
     }
 }
+
+
+// Arrays.binarySearch 메소드 활용하기
+import java.util.*;
+import java.io.*;
+
+public class Main{
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int[] arr = new int[n];
+        for(int i=0; i<n; i++){
+            arr[i] = sc.nextInt();
+        }
+        Arrays.sort(arr);
+        int m = sc.nextInt();
+        for(int i=0; i<m; i++){
+            int idx = Arrays.binarySearch(arr, sc.nextInt());
+            if(idx <0)
+                System.out.println("0");
+            else
+                System.out.println("1");
+        }
+    }
+}
