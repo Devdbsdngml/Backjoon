@@ -1,0 +1,71 @@
+import java.util.*;
+import java.io.*;
+
+public class Main{
+    public static BufferedReader br;
+    public static BufferedWriter bw;
+    public static StringTokenizer st;
+    public static StringBuilder sb;
+    public static int n;
+    public static int[] cards;
+    
+    public static void main(String[] args) throws IOException{
+        br = new BufferedReader(new InputStreamReader(System.in));
+        bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        
+        n = Integer.parseInt(br.readLine());
+        cards = new int[n];
+        
+        st = new StringTokenizer(br.readLine());
+        for(int i=0; i<n; i++){
+            cards[i] = Integer.parseInt(st.nextToken());
+        }
+        
+        Arrays.sort(cards);
+        
+        int m = Integer.parseInt(br.readLine());
+        sb = new StringBuilder();
+        st = new StringTokenizer(br.readLine());
+        for(int i=0; i<m; i++){
+            sb.append(getCount(Integer.parseInt(st.nextToken()))).append(" ");
+        }
+        bw.write(sb.toString());
+        bw.flush();
+    }
+    
+    public static int getCount(int num){
+        int left = lowerBound(num);
+        int right = upperBound(num);
+        return right - left;
+    }
+    
+    public static int lowerBound(int num){
+        int start = 0;
+        int end = n;
+        
+        while(end > start){
+            int mid = (start+end)/2;
+            if(cards[mid] < num){
+                start = mid + 1;
+            } else{
+                end = mid;
+            }
+        }
+        return end;
+    }
+    
+    public static int upperBound(int num){
+        int start = 0;
+        int end = n;
+        
+        while(end > start){
+            int mid = (start+end)/2;
+            if(cards[mid] <= num){
+                start = mid + 1;
+            } else{
+                end = mid;
+            }
+        }
+        return end;
+    }
+}
