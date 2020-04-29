@@ -1,0 +1,35 @@
+import java.util.*;
+import java.io.*;
+
+public class Main{
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int k = sc.nextInt();
+        Queue<Integer> q = new LinkedList<>();
+        StringBuilder sb = new StringBuilder();
+        
+        for(int i=1; i<=n; i++){
+            q.add(i);
+        }
+        
+        int outPersons = 0;
+        int count = 0;
+        sb.append("<");
+        while(outPersons != n){
+            int num = q.poll();
+            count++;
+            
+            if(count == k){
+                sb.append(num+", ");
+                outPersons++;
+                count = 0;
+            } else{
+                q.add(num);
+            }
+        }
+        sb.delete(sb.length()-2, sb.length());
+        sb.append(">");
+        System.out.println(sb);
+    }
+}
