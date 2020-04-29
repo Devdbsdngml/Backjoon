@@ -1,0 +1,46 @@
+import java.util.*;
+import java.io.*;
+
+public class Main{
+    public static void main(String[] args)throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+        
+        int n = Integer.parseInt(br.readLine());
+        Queue<Integer> q = new LinkedList<>();
+        int num = 0;
+        for(int i=0; i<n; i++){
+            st = new StringTokenizer(br.readLine());
+            String cmd = st.nextToken();
+            
+            if(cmd.equals("push")){
+                num = Integer.parseInt(st.nextToken());
+                q.add(num);
+            } else if(cmd.equals("pop")){
+                if(!q.isEmpty())
+                    bw.write(String.valueOf(q.poll())+"\n");
+                else
+                    bw.write("-1\n");
+            } else if(cmd.equals("size")){
+                bw.write(String.valueOf(q.size())+"\n");
+            } else if(cmd.equals("empty")){
+                if(q.isEmpty())
+                    bw.write("1\n");
+                else
+                    bw.write("0\n");
+            } else if(cmd.equals("front")){
+                if(!q.isEmpty())
+                    bw.write(String.valueOf(q.peek())+"\n");
+                else
+                    bw.write("-1\n");
+            } else if(cmd.equals("back")){
+                if(!q.isEmpty())
+                    bw.write(String.valueOf(num+"\n"));
+                else
+                    bw.write("-1\n");
+            }
+        }
+        bw.flush();
+    }
+}
