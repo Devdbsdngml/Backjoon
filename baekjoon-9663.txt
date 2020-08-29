@@ -1,0 +1,47 @@
+import java.util.*;
+import java.io.*;
+
+public class Main{
+    
+    static int[] col = new int[15];
+    static int n;
+    static int answer;
+    
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        n = sc.nextInt();
+        
+        dfs(0);
+        
+        System.out.println(answer);
+    }
+    
+    public static void dfs(int row){
+        // row가 마지막 행까지 수행하면 찾기 완료
+        if(row == n){
+            answer++;
+            return;
+        }
+            
+        for(int i=0; i<n; i++){
+            col[row] = i; 
+            
+            if(isPromising(row)){
+                dfs(row+1);
+            }
+        }
+    }
+    
+    public static boolean isPromising(int row){
+        for(int i=0; i<row; i++){
+	// 같은 열이면 안 됨
+            if(col[i] == col[row])
+                return false;
+            
+	// 대각선상에 있으면 안 됨
+            if(Math.abs(col[i] - col[row]) == Math.abs(i - row))
+                return false;
+        }
+        return true;
+    }
+}
