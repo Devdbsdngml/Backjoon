@@ -6,16 +6,12 @@ public class Main{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
         
-        st= new StringTokenizer(br.readLine());
-        
-        int n = Integer.parseInt(st.nextToken());
-        
+        int n = Integer.parseInt(br.readLine());
+        int m = Integer.parseInt(br.readLine());
+
         int[][] nodes = new int[n+1][n+1];
         boolean[] visited = new boolean[n+1];
-        
-        st= new StringTokenizer(br.readLine());
-        
-        int m = Integer.parseInt(st.nextToken());
+
         for(int i=0; i<m; i++){
             st = new StringTokenizer(br.readLine());
             int a = Integer.parseInt(st.nextToken());
