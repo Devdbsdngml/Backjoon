@@ -1,0 +1,81 @@
+import java.util.*;
+import java.io.*;
+
+public class Main{
+    static class Point{
+        int x;
+        int y;
+        Point(int x, int y){
+            this.x = x;
+            this.y = y;
+        }
+    }
+    static int[] dx = {-1, 1, 0, 0};
+    static int[] dy = {0, 0, 1, -1};
+    
+    static int[][] map;
+    static boolean[][] visited;
+    static int cnt;
+    static int M;
+    static int N;
+    
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+        
+        int T = Integer.parseInt(br.readLine());
+        for(int tc=0; tc<T; tc++){
+            st = new StringTokenizer(br.readLine());
+            M = Integer.parseInt(st.nextToken()); // 가로 길이
+            N = Integer.parseInt(st.nextToken()); // 세로 길이
+            
+            map = new int[N][M];
+            visited = new boolean[N][M];
+            cnt = 0;
+            
+            int K = Integer.parseInt(st.nextToken()); // 배추 개수
+            
+            // 배추 심어놓은 위치 만들기
+            for(int k=0; k<K; k++){
+                st = new StringTokenizer(br.readLine());
+                int x = Integer.parseInt(st.nextToken());
+                int y = Integer.parseInt(st.nextToken());
+                
+                map[y][x] = 1;
+            }
+            
+            for(int i=0; i<N; i++){
+                for(int j=0; j<M; j++){
+                    if(map[i][j] == 1 && !visited[i][j]){
+                        bfs(i, j);
+                        cnt++;
+                    }
+                }
+            }
+            System.out.println(cnt);
+        }
+    }
+    
+    static void bfs(int x, int y){
+        Queue<Point> que = new LinkedList<>();
+        que.add(new Point(x, y));
+        visited[x][y] = true;
+        
+        while(!que.isEmpty()){
+            Point point = que.poll();
+            
+            for(int i=0; i<4; i++){
+                int nextX = point.x + dx[i];
+                int nextY = point.y + dy[i];
+                
+                if(0<= nextX && nextX < N && 0 <= nextY && nextY < M){
+                    if(map[nextX][nextY] == 1 && !visited[nextX][nextY]){
+                        que.add(new Point(nextX, nextY));
+                        visited[nextX][nextY] = true;
+                    }
+                }
+            }
+        }
+    }
+    
+}
