@@ -1,0 +1,72 @@
+import java.util.*;
+import java.io.*;
+
+public class Main{
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        HashMap<Character, Integer> hm = new HashMap<>();
+        
+        String s = br.readLine().toUpperCase();
+        char[] cArr = s.toCharArray();
+        
+        for(char c : cArr){
+            if(!hm.containsKey(c)){
+                hm.put(c, 1);
+            } else{
+                hm.put(c, hm.get(c)+1);
+            }
+        }
+        
+        System.out.print(solution(hm));
+    }
+    
+    private static Character solution(HashMap<Character, Integer> hm){
+        int max = -1;
+        char res = '?';
+        
+        for(Map.Entry<Character, Integer> entry : hm.entrySet()){
+            if(entry.getValue() > max){
+                max = entry.getValue();
+                res = entry.getKey();
+            } else if(entry.getValue() == max){
+                res = '?';
+            }
+        }
+        
+        return res;
+    }
+}
+
+// 다른 사람 풀이
+import java.io.IOException;
+public class Main {
+    public static void main(String[] args) throws IOException {
+        int[] arr = new int[26];
+        
+        int c = System.in.read();
+        
+        
+        while(c > 64) {
+            if(c < 91) {
+                arr[c - 'A']++;
+            }else {
+                arr[c - 'a']++;
+            }
+            c = System.in.read();
+        }
+        
+        int max = -1;
+        int ch = -2;
+        
+        for(int i = 0; i < 26; i++) {
+            if(arr[i] > max) {
+                max = arr[i];
+                ch = i;
+            }else if(arr[i] == max){
+                ch = -2;
+            }
+        }
+        
+        System.out.print((char) (ch+65));
+    }
+}
