@@ -1,0 +1,36 @@
+import java.util.*;
+import java.io.*;
+
+public class Main{
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        
+        /*
+        
+        n * C = A + (n * B)
+       -> n = A / (C - B) + 1
+       
+       (C - B) 가 음수거나 0이면 이익이 발생하지 않음
+       -> C <= B
+        
+        */
+        
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        
+        int A = Integer.parseInt(st.nextToken());
+        int B = Integer.parseInt(st.nextToken());
+        int C = Integer.parseInt(st.nextToken());
+        br.close();
+        
+        if(C <= B){
+            bw.write("-1");
+        } else{
+            bw.write(String.valueOf((A/(C-B))+1));
+        }
+        
+        bw.flush();
+        bw.close();
+        
+    }
+}
