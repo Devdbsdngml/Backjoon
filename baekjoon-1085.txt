@@ -1,0 +1,22 @@
+import java.util.*;
+import java.io.*;
+
+public class Main{
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st = new StringTokenizer(br.readLine());        
+        
+        int[] arr = new int[4];
+        // x, y, w, h
+        for(int i=0; i<arr.length; i++){
+            arr[i] = Integer.parseInt(st.nextToken());
+        }
+        int x = Math.min(arr[0], (arr[2] - arr[0]));
+        int y = Math.min(arr[1], (arr[3] - arr[1]));
+        
+        int res = Math.min(x, y);
+        bw.write(String.valueOf(res));
+        bw.flush();
+    }
+}
