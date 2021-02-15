@@ -1,0 +1,26 @@
+import java.util.*;
+import java.io.*;
+
+public class Main{
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        
+        int n = Integer.parseInt(br.readLine());
+        int fir = 1;
+        int mul = 6;
+        int cnt = 1;
+        
+        for(int i=1; ; i++){
+            if(fir >= n){
+                break;
+            }
+            int tmp = mul * i;
+            fir += tmp;
+            cnt++;
+        }
+        
+        bw.write(String.valueOf(cnt));
+        bw.flush();
+    }
+}
