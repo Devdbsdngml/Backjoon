@@ -1,0 +1,34 @@
+import java.util.*;
+import java.io.*;
+
+public class Main{
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        
+        int n = Integer.parseInt(br.readLine());
+        bw.write(String.valueOf(solution(n)));
+        bw.flush();
+    }
+    
+    private static int solution(int num){
+        int res = 0;
+        
+        if(num < 100){
+            return num;
+        } else{
+            res = 99;
+            
+            for(int i=100; i<=num; i++){
+                int baek = i / 100;
+                int sip = (i / 10) % 10;
+                int il = i % 10;
+                
+                if((baek - sip) == (sip - il)){
+                    res++;
+                }
+            }
+            return res;
+        }
+    }
+}
