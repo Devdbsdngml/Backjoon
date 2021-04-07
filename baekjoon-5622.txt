@@ -1,0 +1,39 @@
+import java.util.*;
+import java.io.*;
+
+public class Main{
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        
+        // A : 65
+        // ABC 3 DEF 4 GHI 5 JKL 6 MNO 7 PQRS 8 TUV 9 WXYZ 10
+        String input = br.readLine(); // UNUCIC 36
+        int res = 0;
+        
+        for(char c : input.toCharArray()){
+            if(65 <= c && c <= 67){
+                res += 3;
+            } else if(68 <= c && c <= 70){
+                res += 4;
+            } else if(71 <= c && c <= 73){
+                res += 5;
+            } else if(74 <= c && c <= 76){
+                res += 6;
+            } else if(77 <= c && c <= 79){
+                res += 7;
+            } else if(80 <= c && c <= 83){
+                res += 8;
+            } else if(84 <= c && c <= 86){
+                res += 9;
+            } else if(87 <= c && c <= 90){
+                res += 10;
+            }
+        }
+        
+        bw.write(String.valueOf(res));
+        bw.flush();
+        br.close();
+        bw.close();
+    }
+}
