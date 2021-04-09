@@ -1,0 +1,57 @@
+// 틀렸습니다!
+
+import java.io.*;
+import java.util.*;
+
+public class Main
+{
+	public static void main(String[] args) throws IOException{
+	    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        // 7, 35
+        int N = Integer.parseInt(br.readLine());
+        int findVal = Integer.parseInt(br.readLine());
+        
+        int val = N * N;
+        int[][] matrix = new int[N+1][N+1];
+        int[] dx = {1, 0, -1, 0}; // 상하
+        int[] dy = {0, 1, 0, -1}; // 좌우
+        int dir = 0;
+        int x = 1;
+        int y = 1;
+        
+        // ↓ → ↑ ←
+        while(val > 0){
+            matrix[x][y] = val--;
+            
+            // 배열의 범위를 벗어나거나, 이미 값이 존재하면 방향을 바꾼다
+            if(x + dx[dir] < 0 || y + dy[dir] < 0 ||
+               x + dx[dir] >= N+1 || y + dy[dir] >= N+1 ||
+               matrix[x+dx[dir]][y+dy[dir]] != 0){
+                dir++;
+                if(dir == 4) dir = 0;
+            }
+            
+            x += dx[dir];
+            y += dy[dir];
+        }
+        
+        int[] res = new int[2];
+        for(int i=1; i<N+1; i++){
+            for(int j=1; j<N+1; j++){
+                if(matrix[i][j] == findVal){
+                    res[0] = i;
+                    res[1] = j;
+                }
+                bw.write(String.valueOf(matrix[i][j])+" ");
+            }
+            bw.newLine();
+        }
+        bw.write(String.valueOf(res[0])+" "+String.valueOf(res[1]));
+        
+        bw.flush();
+        
+        br.close();
+        bw.close();
+	}
+}
