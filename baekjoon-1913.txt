@@ -55,3 +55,61 @@ public class Main
         bw.close();
 	}
 }
+
+// 이틀동안 고민할 문제가 아닌데.......... 배열을 N크기로 만들어 놓고 출력을 < N+1 까지 해놓고
+// 런타임에러 뜬다고 계속 로직만 쳐다봄.........
+import java.io.*;
+import java.util.*;
+
+public class Main
+{
+	public static void main(String[] args) throws IOException{
+	    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        // 7, 35
+        int N = Integer.parseInt(br.readLine());
+        int findVal = Integer.parseInt(br.readLine());
+        
+        int val = N * N;
+        int[][] matrix = new int[N][N];
+        int[] dx = {1, 0, -1, 0}; // 상하
+        int[] dy = {0, 1, 0, -1}; // 우좌
+        int dir = 0;
+        int x = 0;
+        int y = 0;
+        
+        // ↓ → ↑ ←
+        while(val > 0){
+            matrix[x][y] = val--;
+            
+            // 배열의 범위를 벗어나거나, 이미 값이 존재하면 방향을 바꾼다
+            if(x + dx[dir] < 0 || y + dy[dir] < 0 ||
+               x + dx[dir] >= N || y + dy[dir] >= N ||
+               matrix[x+dx[dir]][y+dy[dir]] != 0){
+                dir++;
+                if(dir == 4) dir = 0;
+            }
+            
+            x += dx[dir];
+            y += dy[dir];
+        }
+        
+        int[] res = new int[2];
+        for(int i=0; i<N; i++){
+            for(int j=0; j<N; j++){
+                if(matrix[i][j] == findVal){
+                    res[0] = i+1;
+                    res[1] = j+1;
+                }
+                bw.write(String.valueOf(matrix[i][j])+" ");
+            }
+            bw.newLine();
+        }
+        bw.write(String.valueOf(res[0])+" "+String.valueOf(res[1]));
+        
+        bw.flush();
+        
+        br.close();
+        bw.close();
+	}
+}
