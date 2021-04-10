@@ -1,0 +1,52 @@
+// 주어진 테케는 정상 출력 되는데 제출하면 틀렸습니다!
+import java.io.*;
+
+public class Main{
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        String input = br.readLine(); // quqacukqauackck, kcauq
+        /*
+
+        1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+        q u q a c u k q a u a c k c k
+
+        */
+
+        int len = input.length();
+        int cnt = 0;
+        String quack = "quack";
+        boolean[] visited = new boolean[len];
+
+        for(int i=0; i<len; i++){
+            int idx = 0; // quack의 idx
+            boolean flag = true;
+            if(input.charAt(i) == 'q' && !visited[i]){
+                for(int j=i; j<len; j++){
+                    if(input.charAt(j) == quack.charAt(idx) && !visited[j]){
+                        visited[j] = true;
+                        if(input.charAt(j) == 'k' && idx == 4){
+                            if(flag){
+                                cnt++;
+                                flag = false;
+                            }
+                            idx = 0;
+                        }
+                        idx++;
+                    }
+                }
+            }
+        }
+
+        if(cnt == 0){
+            bw.write("-1");
+        } else{
+            bw.write(String.valueOf(cnt));
+        }
+
+        bw.flush();
+        br.close();
+        bw.close();
+    }
+}
