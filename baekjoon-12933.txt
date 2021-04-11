@@ -50,3 +50,90 @@ public class Main{
         bw.close();
     }
 }
+
+// 오픈카톡방에서 반례들을 주셔서 하루동안 고민해봤고
+// 잘못된 점(반례 예 : qquack 출력 : -1)을 보니 q를 만났을 때 방문처리를 하지 않고
+// 인덱스들을 queue에 담아놓고 k를 만났을 때 방문처리를 해줬더니 맞았다 + input의 length가 5의 배수가 아니면 올바르지 않대
+
+import java.io.*;
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class Main{
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        String input = br.readLine(); // quqacukqauackck, kcauq
+        /*
+
+        1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+        q u q a c u k q a u a c k c k
+
+        1 1 1 1 0 1 0 1 1 1 1 1 1 1 1 1 1 0 0
+        q u q u q a u a c k c k q u a c k c k
+
+        1 1 1 1 1 1 0 1 0 0 0 0 1 1 1
+        q u a c k q a u c k q u a c k
+
+        1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+        q u q a q u u a c a k c q c k k u a q u c k q a u c k a c k
+
+        */
+
+        int len = input.length();
+        int cnt = 0;
+        String quack = "quack";
+        boolean[] visited = new boolean[len];
+        Queue<Integer> que = new LinkedList<>();
+
+        /*
+
+        1 0 1 1 1 1
+        q q u a c k
+
+        */
+        for(int i=0; i<len; i++){
+            int idx = 0; // quack의 idx
+            boolean flag = true; // 처음인지 check
+            if(input.charAt(i) == 'q' && !visited[i]){
+                for(int j=i; j<len; j++){
+                    if(input.charAt(j) == quack.charAt(idx) && !visited[j]){
+                        que.offer(j);
+                        if(input.charAt(j) == 'k'){
+                            if(flag){
+                                cnt++;
+                                flag = false;
+                            }
+                            while(!que.isEmpty()){
+                                visited[que.poll()] = true;
+                            }
+                        }
+                        if(idx == 4){
+                            idx = 0;
+                        } else{
+                            idx++;
+                        }
+                    }
+                }
+            }
+        }
+
+        for(int i=0; i<len; i++){
+            if(!visited[i]){
+                cnt = -1;
+                break;
+            }
+        }
+
+        if(cnt == 0 || len % 5 != 0){
+            cnt = -1;
+        }
+        bw.write(String.valueOf(cnt));
+
+        bw.flush();
+        br.close();
+        bw.close();
+    }
+
+}
