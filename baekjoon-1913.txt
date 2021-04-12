@@ -72,8 +72,8 @@ public class Main
         
         int val = N * N;
         int[][] matrix = new int[N][N];
-        int[] dx = {1, 0, -1, 0}; // 상하
-        int[] dy = {0, 1, 0, -1}; // 우좌
+        int[] dx = {1, 0, -1, 0}; // 하   상
+        int[] dy = {0, 1, 0, -1}; //    우   좌
         int dir = 0;
         int x = 0;
         int y = 0;
