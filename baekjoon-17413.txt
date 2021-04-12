@@ -1,0 +1,143 @@
+// 12%에서 '틀렸습니다' 나오는데.. 예제는 다 맞고 반례도 맞는데? 맞왜틀..
+
+import java.io.*;
+
+public class Main{
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        String input = br.readLine();
+        String res = "";
+
+        // 태그가 없으면
+        if(!input.contains("<")){
+            String[] word = input.split(" ");
+            if(word.length <= 1){
+                res += (new StringBuilder(word[0])).reverse().toString();
+            } else{
+                for(int i=0; i< word.length; i++){
+                    res += (new StringBuilder(word[i])).reverse().toString();
+                    if(i != word.length-1){
+                        res += " ";
+                    }
+                }
+            }
+        } // 태그가 있으면
+        else{
+            String[] temp = input.split("<");
+            for(int i=1; i<temp.length; i++){
+                int idx = temp[i].indexOf(">");
+                int len = temp[i].length();
+                String tagIn = temp[i].substring(0, idx+1); // < > 안의 문자열
+                String tagOut = temp[i].substring(idx+1, len); // < > 밖의 문자열
+                // 태그 밖의 문자열이 공백을 포함하고 있다면
+                if(tagOut.contains(" ")){
+                    res += "<" + tagIn;
+                    String[] outWord = tagOut.split(" ");
+                    for(int j=0; j< outWord.length; j++){
+                        res += (new StringBuilder(outWord[j])).reverse().toString();
+                        if(j != outWord.length-1){ // 마지막 문자열 다음엔 " "을 추가하면 안 됨
+                            res += " ";
+                        }
+                    }
+                } // 공백을 포함하고 있지 않다면
+                else{
+                    res += "<" + tagIn;
+                    res += (new StringBuilder(tagOut)).reverse().toString();
+                }
+            }
+        }
+
+        bw.write(res);
+
+        bw.flush();
+        br.close();
+        bw.close();
+    }
+}
+
+// 두번째 풀이
+import java.io.*;
+
+public class Main{
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        /*
+
+        baekjoon online judge     ->     noojkeab enilno egduj
+        <open>tag<close>     ->     <open>gat<close>
+        <ab cd>ef gh<ij kl>     ->     <ab cd>fe hg<ij kl>
+        one1 two2 three3 4fourr 5five 6six     ->     1eno 2owt 3eerht rruof4 evif5 xis6
+        <int><max>2147483647<long long><max>9223372036854775807     ->      <int><max>7463847412<long long><max>7085774586302733229
+        <problem>17413<is hardest>problem ever<end>     ->      <problem>31471<is hardest>melborp reve<end>
+        <   space   >space space space<    spa   c e>     ->      <   space   >ecaps ecaps ecaps<    spa   c e>
+
+        */
+
+        String input = br.readLine();
+        String res = "";
+
+        // 태그가 없으면
+        if(!input.contains("<")){
+            String[] word = input.split(" ");
+            if(word.length <= 1){
+                res += (new StringBuilder(word[0])).reverse().toString();
+            } else{
+                for(int i=0; i< word.length; i++){
+                    res += (new StringBuilder(word[i])).reverse().toString();
+                    if(i != word.length-1){
+                        res += " ";
+                    }
+                }
+            }
+        } // 태그가 있으면
+        else{
+            String[] temp = input.split("<");
+//            for(String str : temp){
+//                bw.write(str+"\n");
+//            }
+            // abc cdf<ab 12  cd>asd 4av<asnd kgr>dsjkl21  45 경우 중간에 위치한 '<'부터가 나오고
+            // 앞에 문자열 "abc cdf"는 출력이 안 됐었다 -> temp[0]을 아예 생각도 않았음
+            String[] tmp = temp[0].split(" ");
+            for(int i =0; i< tmp.length; i++){
+                res += (new StringBuilder(tmp[i])).reverse().toString();
+                if(i != tmp.length-1){
+                    res += " ";
+                }
+            }
+            for(int i=1; i<temp.length; i++){
+                int idx = temp[i].indexOf(">");
+                int len = temp[i].length();
+//                bw.write(i+""+len);
+                String tagIn = temp[i].substring(0, idx+1); // < > 안의 문자열
+//                bw.write(tagIn+" ");
+                String tagOut = temp[i].substring(idx+1, len); // < > 밖의 문자열
+                // 태그 밖의 문자열이 공백을 포함하고 있다면
+                if(tagOut.contains(" ")){
+                    res += "<" + tagIn;
+                    String[] outWord = tagOut.split(" ");
+                    for(int j=0; j< outWord.length; j++){
+                        res += (new StringBuilder(outWord[j])).reverse().toString();
+                        if(j != outWord.length-1){ // 마지막 문자열 다음엔 " "을 추가하면 안 됨
+                            res += " ";
+                        }
+                    }
+                } // 공백을 포함하고 있지 않다면
+                else{
+                    res += "<" + tagIn;
+                    res += (new StringBuilder(tagOut)).reverse().toString();
+                }
+//                bw.write(tagOut+"\n");
+            }
+        }
+
+        bw.write(res);
+
+        bw.flush();
+        br.close();
+        bw.close();
+    }
+}
