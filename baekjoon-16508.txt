@@ -1,0 +1,98 @@
+import java.io.*;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+
+public class Main{
+    static class Book{
+        int price;
+        String title;
+
+        Book(int price, String title){
+            this.price = price;
+            this.title = title;
+        }
+
+        public int getPrice() {
+            return price;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+    }
+    private static BufferedReader br;
+    private static BufferedWriter bw;
+
+    static String findWord; // 찾을 단어
+    static int N; // 전공책 종류 개수
+
+    static int[] findWordCheck = new int[26]; // 찾을 단어의 알파벳 인덱스 체크
+    static int[] bookWordCheck = new int[26]; // 전공책 제목의 알파벳 인덱스 체크
+
+    static ArrayList<Book> list = new ArrayList<>();
+    static int ans = 987654321;
+
+    public static void main(String[] args) throws IOException {
+        br = new BufferedReader(new InputStreamReader(System.in));
+        bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        findWord = br.readLine();
+        N = Integer.parseInt(br.readLine()); // 책 종류 수
+
+        // 찾을 단어 알파벳 인덱스 체크
+        for(int i=0; i<findWord.length(); i++){
+            findWordCheck[findWord.charAt(i) - 'A']++;
+        }
+
+        StringTokenizer st;
+        for(int i=0; i<N; i++){
+            st = new StringTokenizer(br.readLine());
+            int p = Integer.parseInt(st.nextToken());
+            String t = st.nextToken();
+            list.add(new Book(p, t));
+        }
+
+        dfs(0, 0);
+        ans = ans == 987654321 ? -1 : ans;
+        bw.write(""+ans);
+
+        bw.flush();
+        br.close();
+        bw.close();
+    }
+
+    private static void dfs(int idx, int totalPrice) {
+        if(idx == N){
+            if(check()){
+//                System.out.println("check!");
+                ans = Math.min(ans, totalPrice);
+            }
+            return;
+        }
+
+        for(int i=0; i<list.get(idx).getTitle().length(); i++){
+            bookWordCheck[list.get(idx).getTitle().charAt(i) - 'A']++;
+//            System.out.print("++ ");
+        }
+//        System.out.println();
+
+        dfs(idx + 1, totalPrice + list.get(idx).getPrice());
+
+        for(int i=0; i<list.get(idx).getTitle().length(); i++){
+            bookWordCheck[list.get(idx).getTitle().charAt(i) - 'A']--;
+//            System.out.print("-- ");
+        }
+//        System.out.println();
+
+        dfs(idx + 1, totalPrice);
+    }
+
+    private static boolean check() {
+        for(int i=0; i<26; i++){
+            if(findWordCheck[i] > bookWordCheck[i]){
+                return false;
+            }
+        }
+        return true;
+    }
+}
