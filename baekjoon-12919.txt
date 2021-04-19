@@ -1,0 +1,92 @@
+import java.io.*;
+
+public class Main{
+    /*
+    * S -> T
+    * 문자열의 뒤에 A를 추가한다. -> 1번 연산
+    * 문자열의 뒤에 B를 추가하고 문자열을 뒤집는다. -> 2번 연산
+    *
+    * T -> S (T를 S로 만들 수 있냐 ?)
+    * 문자열의 뒤에 A를 제거한다.
+    * 문자열을 뒤집고 문자열의 뒤에 B를 제거한다.
+    *
+    * Method
+    * 1. 문자열의 맨 뒤 문자 제거
+    * 2. 문자열 뒤집기
+    *
+    * 문자열 T가 가능한 경우의 수
+    *
+    * 1. A~~A
+    *   : 1번 연산으로 가능
+    * 2. A~~B
+    *   : 불가능
+    * 3. B~~A
+    *   : 1번 연산 또는 2번 연산으로 가능
+    * 4. B~~B
+    *   : 2번 연산으로 가능
+    *
+    * */
+    private static BufferedReader br;
+    private static BufferedWriter bw;
+
+    private static String S;
+    private static String T;
+
+    public static void main(String[] args) throws IOException {
+        br = new BufferedReader(new InputStreamReader(System.in));
+        bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        S = br.readLine();
+        T = br.readLine();
+
+        int res = isPossible(S, T) ? 1 : 0;
+        bw.write(""+res);
+
+        bw.flush();
+        br.close();
+        bw.close();
+    }
+
+    private static boolean isPossible(String S, String T) {
+        if(S.equals(T)){
+            return true;
+        }
+
+        if(T.length() >= 2){
+            char start = T.charAt(0); // 첫번째 문자
+            char end = T.charAt(T.length()-1); // 마지막 문자
+
+            if(start == 'A') {
+                // A~~A 인 경우 : 1번 연산으로 가능
+                if (end == 'A') {
+                    return isPossible(S, removeLastChar(T));
+                }
+                // A~~B 인 경우 : 불가능
+                else {
+                    return false;
+                }
+            }else{
+                // B~~A 인 경우 : 1번 또는 2번 연산으로 가능
+                if(end == 'A'){
+                    return isPossible(S, removeLastChar(T)) || isPossible(S, removeLastChar(reverseStr(T)));
+                }
+                // B~~B 인 경우 : 2번 연산으로 가능
+                else{
+                    return isPossible(S, removeLastChar(reverseStr(T)));
+                }
+            }
+        }
+        return false;
+    }
+    // 문자열 뒤집기
+    private static String reverseStr(String str) {
+        StringBuilder sb = new StringBuilder(str);
+        sb.reverse();
+
+        return sb.toString();
+    }
+    // 마지막 문자 제거
+    private static String removeLastChar(String str) {
+        return str.substring(0, str.length()-1);
+    }
+}
