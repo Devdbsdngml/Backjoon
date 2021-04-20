@@ -1,0 +1,80 @@
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class Main{
+    private static BufferedReader br;
+    private static BufferedWriter bw;
+
+    private static int N;
+    private static int[][] stats;
+    private static boolean[] checked;
+    private static int ans = Integer.MAX_VALUE;
+
+    public static void main(String[] args) throws IOException {
+        br = new BufferedReader(new InputStreamReader(System.in));
+        bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+
+        N = Integer.parseInt(br.readLine());
+
+        stats = new int[N][N];
+        checked = new boolean[N];
+
+        // Make Array
+        for(int i=0; i<N; i++){
+            st = new StringTokenizer(br.readLine());
+            for(int j=0; j<N; j++){
+                stats[i][j] = Integer.parseInt(st.nextToken());
+            }
+        }
+
+        findMin(0);
+        bw.write(""+ans);
+
+        bw.flush();
+        br.close();
+        bw.close();
+    }
+
+    private static void findMin(int depth){
+        /*
+        *
+        * '두 팀의 인원수는 같지 않아도 되지만, 한 명 이상이어야 한다.'
+        * 아래 로직은 위에 조건을 만족하지 않는다
+        *  : 모두 true일 때부터 시작되어서..
+        *
+        * */
+        if(depth == N){
+            int startTeam = 0;
+            int linkTeam = 0;
+
+            for(int i=0; i<N-1; i++){
+                for(int j=i+1; j<N; j++){
+                    if(checked[i] && checked[j]){
+                        startTeam += stats[i][j] + stats[j][i];
+                        System.out.print(startTeam+" ");
+                    } else if(!checked[i] && !checked[j]){
+                        linkTeam += stats[i][j] + stats[j][i];
+                        System.out.print(linkTeam+" ");
+                    }
+                    System.out.println();
+                }
+            }
+
+            int val = Math.abs(startTeam - linkTeam);
+            System.out.println("val : "+val);
+            if(val == 0){
+                System.out.print(val);
+                System.exit(0);
+            }
+
+            ans = Math.min(ans, val);
+            return;
+        }
+
+        checked[depth] = true;
+        findMin(depth+1);
+        checked[depth] = false;
+        findMin(depth+1);
+    }
+}
