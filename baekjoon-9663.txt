@@ -45,3 +45,59 @@ public class Main{
         return true;
     }
 }
+
+// 바킹독님 해설 후 풀이
+import java.io.*;
+
+public class Main{
+    private static BufferedReader br;
+    private static BufferedWriter bw;
+
+    private static int N;
+    private static int cnt;
+    private static boolean[] isUsed1; // 같은 열에 있는지 확인
+    private static boolean[] isUsed2; // 좌측하단~우측상단 대각선 (/) 에 있는지 확인 -> x+y가 같을 때!
+    private static boolean[] isUsed3; // 좌측상단~우측하단 대각선 (\) 에 있는지 확인 -> |x-y|가 같을 때! Math.abs는 안 된다
+
+
+    public static void main(String[] args) throws IOException {
+        br = new BufferedReader(new InputStreamReader(System.in));
+        bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        N = Integer.parseInt(br.readLine());
+
+        isUsed1 = new boolean[N];
+        isUsed2 = new boolean[2*N - 1];
+        isUsed3 = new boolean[2*N - 1];
+
+        cnt = 0;
+        dfs(0);
+        bw.write(""+cnt);
+
+        bw.flush();
+        br.close();
+        bw.close();
+    }
+
+    private static void dfs(int row){
+        if(row == N){
+            cnt++;
+            return;
+        }
+
+        for(int col=0; col<N; col++){
+            // 각 배열이 참이면 -> 퀸이 놓여 있다
+            if(isUsed1[col] || isUsed2[col+row] || isUsed3[col-row+(N-1)]){
+                continue;
+            }
+
+            isUsed1[col] = true;
+            isUsed2[col+row] = true;
+            isUsed3[col-row+(N-1)] = true;
+            dfs(row + 1);
+            isUsed1[col] = false;
+            isUsed2[col+row] = false;
+            isUsed3[col-row+(N-1)] = false;
+        }
+    }
+}
