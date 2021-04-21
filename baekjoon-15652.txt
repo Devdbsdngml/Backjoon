@@ -1,0 +1,68 @@
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class Main{
+    private static BufferedReader br;
+    private static BufferedWriter bw;
+
+    private static int N;
+    private static int M;
+    private static int[] arr;
+    private static boolean[] isUsed;
+
+    /*
+    *
+    * 4 2     input
+    *
+    *         output
+1 1 
+1 2 
+1 3 
+1 4 
+2 2 
+2 3 
+2 4 
+3 3 
+3 4 
+4 4 
+    *
+    * */
+
+    public static void main(String[] args) throws IOException {
+        br = new BufferedReader(new InputStreamReader(System.in));
+        bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+
+        st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+
+        arr = new int[M];
+        isUsed = new boolean[N];
+
+        dfs(0, 0);
+
+        bw.flush();
+        br.close();
+        bw.close();
+    }
+
+    private static void dfs(int depth, int idx) throws IOException {
+        if(depth == M){
+            for(int i=0; i<M; i++){
+                bw.write(arr[i]+" ");
+            }
+            bw.newLine();
+            return;
+        }
+
+        for(int i=idx; i<N; i++){
+//            if(!isUsed[i]){
+//                isUsed[i] = true;
+                arr[depth] = i + 1;
+                dfs(depth+1, i);
+//                isUsed[i] = false;
+//            }
+        }
+    }
+}
