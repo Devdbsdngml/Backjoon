@@ -1,0 +1,77 @@
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class Main{
+    private static BufferedReader br;
+    private static BufferedWriter bw;
+
+    private static int N; // 숫자 개수
+    private static int[] nums; // 숫자 받을 배열
+    private static int[] opers; // 연산자 받을 배열
+
+    private static int maxValue = Integer.MIN_VALUE;
+    private static int minValue = Integer.MAX_VALUE;
+
+    public static void main(String[] args) throws IOException {
+        br = new BufferedReader(new InputStreamReader(System.in));
+        bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+
+        N = Integer.parseInt(br.readLine());
+        nums = new int[N];
+        opers = new int[4];
+
+        // init
+        st = new StringTokenizer(br.readLine());
+        for(int i=0; i<N; i++){
+            nums[i] = Integer.parseInt(st.nextToken());
+        }
+
+        st = new StringTokenizer(br.readLine());
+        for(int i=0; i<4; i++){
+            opers[i] = Integer.parseInt(st.nextToken());
+        }
+
+        // dfs start
+        dfs(nums[0], 1);
+
+        bw.write(maxValue+"\n"+minValue);
+
+        bw.flush();
+        br.close();
+        bw.close();
+    }
+
+    private static void dfs(int num, int idx) {
+        // base condition
+        if(idx == N){
+            maxValue = Math.max(maxValue, num);
+            minValue = Math.min(minValue, num);
+            return;
+        }
+
+        for(int i=0; i<4; i++){
+            if(opers[i] > 0){
+                opers[i]--; // 해당 연산자 개수 -1
+
+                /*
+                *
+                * i의 순서대로 (+,  _,  *,  /) 재귀호출
+                * */
+                if(i == 0){
+                    dfs(num + nums[idx], idx+1);
+                } else if(i == 1){
+                    dfs(num - nums[idx], idx+1);
+                } else if(i == 2){
+                    dfs(num * nums[idx], idx+1);
+                } else{
+                    dfs(num / nums[idx], idx+1);
+                }
+
+                // 재귀 들어갔다가 완료 후 나오면 이곳으로 도착
+                // 원래 잡고 있던 포지션 ++ 해줘야지.
+                opers[i]++;
+            }
+        }
+    }
+}
