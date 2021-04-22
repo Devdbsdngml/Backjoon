@@ -1,0 +1,70 @@
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class Main{
+    private static BufferedReader br;
+    private static BufferedWriter bw;
+
+    private static int N;
+    private static int[][] S;
+    private static boolean[] visited;
+    private static int ans;
+
+    public static void main(String[] args) throws IOException {
+        br = new BufferedReader(new InputStreamReader(System.in));
+        bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+
+        N = Integer.parseInt(br.readLine());
+        S = new int[N][N];
+        visited = new boolean[N];
+
+        for(int i=0; i<N; i++){
+            st = new StringTokenizer(br.readLine());
+            for(int j=0; j<N; j++){
+                S[i][j] = Integer.parseInt(st.nextToken());
+            }
+        }
+
+        ans = Integer.MAX_VALUE;
+        dfs(0, 0);
+        bw.write(""+ans);
+
+        bw.flush();
+        br.close();
+        bw.close();
+    }
+
+    private static void dfs(int cnt, int idx) {
+        if(cnt == N/2){
+            int startTeam = 0;
+            int linkTeam = 0;
+
+//            for(int i=0; i<visited.length; i++) System.out.print(visited[i]+" ");
+//            System.out.println();
+
+            for(int i=0; i<N; i++){
+                for(int j=0; j<N; j++){
+                    if(visited[i] && visited[j]){
+                        startTeam += S[i][j];
+                    }
+                    if(!visited[i] && !visited[j]){
+                        linkTeam += S[i][j];
+                    }
+                }
+            }
+
+            int tmp = Math.abs(startTeam - linkTeam);
+            ans = Math.min(ans, tmp);
+            return;
+        }
+
+        for(int i=idx; i<N; i++){
+            if(!visited[i]){
+                visited[i] = true;
+                dfs(cnt+1, i+1);
+                visited[i] = false;
+            }
+        }
+    }
+}
