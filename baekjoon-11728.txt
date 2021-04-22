@@ -1,0 +1,109 @@
+// (메모리 : 301600KB     시간 : 1740ms)
+
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class Main{
+    private static BufferedReader br;
+    private static BufferedWriter bw;
+
+    private static int N, M;
+    private static int[] A;
+    private static int[] B;
+
+
+    public static void main(String[] args) throws IOException {
+        br = new BufferedReader(new InputStreamReader(System.in));
+        bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        StringTokenizer st;
+
+        st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        StringBuilder sb = new StringBuilder();
+
+        A = new int[N];
+        B = new int[M];
+
+        st = new StringTokenizer(br.readLine());
+        for(int i=0; i<N; i++){
+            A[i] = Integer.parseInt(st.nextToken());
+        }
+
+        st = new StringTokenizer(br.readLine());
+        for(int i=0; i<M; i++){
+            B[i] = Integer.parseInt(st.nextToken());
+        }
+
+        int aPos = 0;
+        int bPos = 0;
+        while(true){
+            if(aPos == N && bPos ==M){
+                break;
+            }
+            if(aPos == N && bPos != M){
+                while(bPos != M){
+                    sb.append(B[bPos++]+" ");
+                }
+            } else if(aPos != N && bPos == M){
+                while(aPos != N){
+                    sb.append(A[aPos++]+" ");
+                }
+            } else if(aPos != N && bPos != M){
+                if(A[aPos] <= B[bPos]){
+                    sb.append(A[aPos++]+" ");
+                } else{
+                    sb.append(B[bPos++]+" ");
+                }
+            }
+        }
+        sb.deleteCharAt(sb.length()-1);
+        bw.write(sb.toString());
+
+        br.close();
+        bw.flush();
+        bw.close();
+    }
+}
+
+// 우선순위 큐에 넣기(메모리 : 343344KB	시간 : 2372ms)
+
+import java.io.*;
+import java.util.PriorityQueue;
+import java.util.StringTokenizer;
+
+public class Main{
+    private static BufferedReader br;
+    private static BufferedWriter bw;
+
+    public static void main(String[] args) throws IOException {
+        br = new BufferedReader(new InputStreamReader(System.in));
+        bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        StringTokenizer st;
+
+        st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
+
+        PriorityQueue<Integer> que = new PriorityQueue<>();
+
+        st = new StringTokenizer(br.readLine());
+        for(int i=0; i<N; i++){
+            que.offer(Integer.parseInt(st.nextToken()));
+        }
+        st = new StringTokenizer(br.readLine());
+        for(int i=0; i<M; i++){
+            que.offer(Integer.parseInt(st.nextToken()));
+        }
+
+        while(!que.isEmpty()){
+            bw.write(que.poll()+" ");
+        }
+
+        br.close();
+        bw.flush();
+        bw.close();
+    }
+}
