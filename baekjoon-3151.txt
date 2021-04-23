@@ -1,0 +1,100 @@
+import java.io.*;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
+public class Main{
+    private static BufferedReader br;
+    private static BufferedWriter bw;
+
+    public static void main(String[] args) throws IOException {
+        br = new BufferedReader(new InputStreamReader(System.in));
+        bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+
+        // input error ?
+        st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(st.nextToken());
+        int[] arr = new int[N];
+
+        st = new StringTokenizer(br.readLine());
+        for(int i=0; i<N; i++){
+            arr[i] = Integer.parseInt(st.nextToken());
+        }
+
+        Arrays.sort(arr);
+
+        for(int i : arr) bw.write(i+" ");
+        bw.newLine();
+
+        /*
+        * 3명을 뽑아서 합이 0이 될 때 경우의 수++
+        * 뽑았다고 팀이 완성이 되어 제출이 아니기에 모든 경우의 수를 계산해야한다.
+        *
+        * 하나의 값을 index 0부터 N-2까지 반복문으로 고정하고, start 인덱스와 end 인덱스로 총 3명을 뽑아서 합 계산.
+        * 주의할 점
+        *
+        * 3명의 합이 0 일때,
+        * 1. start 인덱스의 값과 end 인덱스의 값이 일치할 경우?
+        *   : 배열이 정렬이 되어 있으니 start 인덱스와 end 인덱스 사이의 값을 모두 일치한다
+        *     따라서 (end-start+1)C2 로 값을 구해 경우의 수에 더해줄 수 있다
+        *
+        * 2. start 인덱스의 값과 end 인덱스의 값이 일치하지 않을 경우?
+        *   : start 인덱스와 end 인덱스를 ++ -- 하면서 일치한 값이 존재할 때까지 인덱스를 이동해준다
+        *     (start 인덱스 이동횟수 * end 인덱스 이동횟수) 를 경우의 수에 더해줄 수 있다
+        *
+        *     일치한 값이 여러개 존재하지 않아도 위의 연산으로 경우의 수 계산 가능
+        * */
+
+        long ans = 0;
+        for(int i=0; i<N-2; i++){
+            int firstVal = arr[i]; // 고정할 하나의 값
+
+            int start = i+1; // 고정값 다음부터 start idx
+            int end = N-1; // 마지막 값 end idx
+
+            while(start < end){
+                int sum = firstVal + arr[start] + arr[end];
+
+                if(sum == 0){
+                    // start 인덱스 값과 end 인덱스 값이 일치할 경우
+                    if(arr[start] == arr[end]){
+                        ans += (long) (end - start + 1) *(end-start)/2; // n*(n-1)/2
+                        break;
+                    } else{
+                        /*
+                        * start 인덱스 값과 end 인덱스 값이 일치하지 않을 경우
+                        * 각 값을 저장해두고
+                        * 같은 값이 나올때까지 이동 횟수를 체크
+                        * */
+                        int curEndValue = arr[end];
+                        int endMoveCnt = 0;
+                        while(arr[end] == curEndValue) {
+                            end--;
+                            endMoveCnt++;
+                        }
+
+                        int curStartValue = arr[start];
+                        int startMoveCnt = 0;
+                        while(arr[start] == curStartValue) {
+                            start++;
+                            startMoveCnt++;
+                        }
+
+                        ans += (long) startMoveCnt * endMoveCnt; // 이동 횟수 * 이동 횟수 = 경우의 수
+                    }
+                } else if(sum > 0){
+                    // sum 0보다 크면 end 값을 --  : Two Pointer
+                    end--;
+                } else{
+                    // sum이 0보다 작으면 start ++  : Two Pointer
+                    start++;
+                }
+            }
+        }
+        bw.write(""+ans);
+
+        br.close();
+        bw.flush();
+        bw.close();
+    }
+}
