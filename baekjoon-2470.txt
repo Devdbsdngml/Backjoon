@@ -1,0 +1,51 @@
+import java.io.*;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
+public class Main{
+    private static BufferedReader br;
+    private static BufferedWriter bw;
+
+    public static void main(String[] args) throws IOException {
+        br = new BufferedReader(new InputStreamReader(System.in));
+        bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        int N = Integer.parseInt(br.readLine());
+        int[] arr = new int[N];
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for(int i=0; i<N; i++){
+            arr[i] = Integer.parseInt(st.nextToken());
+        }
+
+        Arrays.sort(arr);
+
+        int start = 0, end = N-1;
+        int min = Integer.MAX_VALUE;
+        int[] ans = new int[2];
+
+        while(start < end){
+            int sum = arr[start] + arr[end];
+//            bw.write("sum "+sum+"\n");
+
+            if(Math.abs(sum) < min){
+                min = Math.abs(sum);
+                ans[0] = arr[start];
+                ans[1] = arr[end];
+            }
+            /*
+            * sum이 0보다 크면 arr[end]의 절대값이 arr[start] 보다 크기때문에 end를 줄여주고
+            * 반대로, sum이 0보다 작으면 start를 증가해주면 된다
+            * */
+            if(sum > 0){
+                end--;
+            }else{
+                start++;
+            }
+        }
+
+        bw.write(ans[0]+" "+ans[1]);
+        br.close();
+        bw.flush();
+        bw.close();
+    }
+}
