@@ -1,0 +1,62 @@
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class Main{
+    private static BufferedReader br;
+    private static BufferedWriter bw;
+
+    private static int[] arr;
+    private static int[] check;
+
+    public static void main(String[] args) throws IOException {
+        br = new BufferedReader(new InputStreamReader(System.in));
+        bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        int N = Integer.parseInt(st.nextToken()); // 길이
+        int K = Integer.parseInt(st.nextToken()); // 같은 원소가 K개 이하로!
+
+        arr = new int[N+1];
+        check = new int[100001];
+
+        st = new StringTokenizer(br.readLine());
+        for(int i=0; i<N; i++){
+            arr[i] = Integer.parseInt(st.nextToken());
+        }
+
+        int start = 0;
+        int end = 0;
+        int ans = -1;
+
+        check[arr[end]]++;
+        while(start <= end){
+//            bw.write("start : "+start+" end "+end);
+//            bw.newLine();
+            // end의 위치가 N과 같으면? 끝.
+            if(end == N){
+                break;
+            }
+            /*
+            * end 위치를 하나씩 늘려가며 check 배열에 해당 값을 ++해주고
+            * 만약 end 위치의 값이 K보다 크다면 start의 위치를 하나씩 늘려가며 check 배열에 해당 값을 --
+            *
+            * K값 보다 작아질 경우 -> 다시 최장 길이를 찾을 수 있음
+            * */
+            if(check[arr[end]] > K){
+                check[arr[start]]--;
+                start++;
+            } else{
+                ans = Math.max(ans, end-start+1);
+                end++;
+                check[arr[end]]++;
+            }
+        }
+
+        bw.write(""+ans);
+
+        br.close();
+        bw.flush();
+        bw.close();
+    }
+}
