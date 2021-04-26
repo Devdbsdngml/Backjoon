@@ -1,0 +1,72 @@
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class Main{
+    private static BufferedReader br;
+    private static BufferedWriter bw;
+
+    public static void main(String[] args) throws IOException {
+        br = new BufferedReader(new InputStreamReader(System.in));
+        bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+
+        int N = Integer.parseInt(br.readLine()); // 스위치 개수
+        int[] switches = new int[N+1];
+
+        st = new StringTokenizer(br.readLine());
+        for(int i=1; i< switches.length; i++){
+            switches[i] = Integer.parseInt(st.nextToken());
+        }
+
+        int T = Integer.parseInt(br.readLine()); // 학생수
+
+        while(T-- > 0){
+            st = new StringTokenizer(br.readLine());
+            int sex = Integer.parseInt(st.nextToken()); // 학생 성별
+            int num = Integer.parseInt(st.nextToken()); // 학생이 받은 스위치 숫자
+
+            /*
+            * 남자라면
+            * 받은 스위치 숫자의 배수에 해당하는 스위치들의 상태를 바꿔준다.
+            * */
+            if(sex == 1){
+                for(int i=num; i<switches.length; i+=num){
+                    if(switches[i] == 1) switches[i] = 0;
+                    else switches[i] = 1;
+                }
+            }
+            /*
+            * 여자라면
+            * 받은 스위치 숫자의 대칭되는 숫자가 같다면? -> 대칭되는 번호까지 상태를 바꿔준다.
+            *                       숫자가 다르다면? -> 해당 번호 상태만 바꿔준다.
+            * */
+            else{
+                int upper = num;
+                int lower = num;
+
+                while(true){
+                    upper++;
+                    lower--;
+                    if(lower < 1 || upper > switches.length-1 || switches[lower] != switches[upper]){
+                        upper--;
+                        lower++;
+                        break;
+                    }
+                }
+                for(int i=lower; i<upper+1; i++){
+                    if(switches[i] == 1) switches[i] = 0;
+                    else switches[i] = 1;
+                }
+            }
+        }
+
+        for(int i=1; i<switches.length; i++){
+            bw.write(switches[i]+" ");
+            if(i % 20 == 0) bw.newLine();
+        }
+
+        br.close();
+        bw.flush();
+        bw.close();
+    }
+}
