@@ -1,0 +1,64 @@
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class Main{
+    private static BufferedReader br;
+    private static BufferedWriter bw;
+
+    static int N;
+    static int[][] graph;
+
+    public static void main(String[] args) throws IOException {
+        br = new BufferedReader(new InputStreamReader(System.in));
+        bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+
+        N = Integer.parseInt(br.readLine()); // 1 <= N <= 100
+        graph = new int[N+1][N+1];
+
+        for(int i=1; i<=N; i++){
+            st = new StringTokenizer(br.readLine());
+            for(int j=1; j<=N; j++){
+                graph[i][j] = Integer.parseInt(st.nextToken());
+            }
+        }
+
+        floydWarshall();
+        printArr(graph);
+
+        bw.flush();
+        br.close();
+        bw.close();
+    }
+
+    private static void floydWarshall() {
+        /*
+        * 플로이드 와샬 알고리즘 :
+        *   '모든 정점'에서 '모든 정점'으로의 최단 경로를 구할 때 <-> 다익스트라 알고리즘
+        *
+        * i -> j 갈 수 있다 :
+        *   i -> k == 1 && k -> j == 1
+        * */
+        // 거쳐가는 정점
+        for(int k=1; k<=N; k++){
+            // 출발 정점
+            for(int i=1; i<=N; i++){
+                // 도착 정점
+                for(int j=1; j<=N; j++){
+                    if(graph[i][k] == 1 && graph[k][j] == 1){
+                        graph[i][j] = 1;
+                    }
+                }
+            }
+        }
+    }
+
+    private static void printArr(int[][] arr) throws IOException {
+        for(int i=1; i<=N; i++){
+            for(int j=1; j<=N; j++){
+                bw.write(arr[i][j]+" ");
+            }
+            bw.newLine();
+        }
+    }
+}
