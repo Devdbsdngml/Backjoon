@@ -1,0 +1,97 @@
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.PriorityQueue;
+import java.util.StringTokenizer;
+
+public class Main{
+    static class Edge implements Comparable<Edge>{
+        int to;
+        int cost;
+
+        public Edge(int to, int cost) {
+            this.to = to;
+            this.cost = cost;
+        }
+
+        @Override
+        public int compareTo(Edge o) {
+            return this.cost - o.cost;
+        }
+    }
+    private static BufferedReader br;
+    private static BufferedWriter bw;
+
+    static ArrayList<ArrayList<Edge>> adj;
+    static PriorityQueue<Edge> que;
+    static int[] dist;
+    static boolean[] visited;
+
+    public static void main(String[] args) throws IOException {
+        br = new BufferedReader(new InputStreamReader(System.in));
+        bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+
+        st = new StringTokenizer(br.readLine());
+        int V = Integer.parseInt(st.nextToken()); // 정점의 개수
+        int E = Integer.parseInt(st.nextToken()); // 간선의 개수
+        int K = Integer.parseInt(br.readLine()); // 시작 정점의 번호
+
+        adj = new ArrayList<>();
+        que = new PriorityQueue<>();
+        dist = new int[V+1];
+        visited = new boolean[V+1];
+
+        for(int i=0; i<=V; i++){
+            adj.add(new ArrayList<>());
+        }
+        Arrays.fill(dist, Integer.MAX_VALUE);
+
+        for(int i=0; i<E; i++){
+            st = new StringTokenizer(br.readLine());
+            // u, v, w
+            int from = Integer.parseInt(st.nextToken());
+            int to = Integer.parseInt(st.nextToken());
+            int cost = Integer.parseInt(st.nextToken());
+
+            adj.get(from).add(new Edge(to, cost));
+        }
+
+        dist[K] = 0;
+        que.offer(new Edge(K, 0));
+
+        dijkstra();
+
+        StringBuilder sb = new StringBuilder();
+        for(int i=1; i<dist.length; i++){
+            if(dist[i] == Integer.MAX_VALUE){
+                sb.append("INF");
+            } else{
+                sb.append(dist[i]);
+            }
+
+            if(i != dist.length-1) sb.append("\n");
+        }
+
+        bw.write(sb.toString());
+        bw.flush();
+        br.close();
+        bw.close();
+    }
+
+    private static void dijkstra() {
+        while(!que.isEmpty()){
+            Edge edge = que.poll();
+
+            if(visited[edge.to]) continue;
+            visited[edge.to] = true;
+
+            for(Edge nextEdge : adj.get(edge.to)){
+                if(dist[nextEdge.to] > dist[edge.to] + nextEdge.cost){
+                    dist[nextEdge.to] = dist[edge.to] + nextEdge.cost;
+                    que.offer(new Edge(nextEdge.to, dist[nextEdge.to]));
+                }
+            }
+        }
+    }
+}
