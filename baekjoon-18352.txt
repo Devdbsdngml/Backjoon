@@ -1,0 +1,79 @@
+import java.io.*;
+import java.util.*;
+
+public class Main{
+    private static BufferedReader br;
+    private static BufferedWriter bw;
+
+    private static int N; // 도시의 개수
+    private static int M; // 도로의 개수
+    private static int K; // 거리 정보(찾아야 할 거리)
+    private static int X; // 출발 도시의 번호
+
+    private static ArrayList<ArrayList<Integer>> adj; // 도시 거리의 정보
+    private static Queue<Integer> que; // BFS
+    private static int[] dist; // 거리 담을 배열
+
+    public static void main(String[] args) throws IOException {
+        br = new BufferedReader(new InputStreamReader(System.in));
+        bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+
+        st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        K = Integer.parseInt(st.nextToken());
+        X = Integer.parseInt(st.nextToken());
+
+        adj = new ArrayList<>();
+        que = new LinkedList<>();
+        dist = new int[N+1];
+
+        for(int i=0; i<=N; i++){
+            adj.add(new ArrayList<>());
+        }
+        Arrays.fill(dist, -1);
+
+        for(int i=0; i<M; i++){
+            st = new StringTokenizer(br.readLine());
+
+            int from = Integer.parseInt(st.nextToken());
+            int to = Integer.parseInt(st.nextToken());
+
+            adj.get(from).add(to);
+        }
+
+        dist[X] = 0;
+        que.offer(X);
+
+        bfs();
+
+        StringBuilder sb = new StringBuilder();
+        for(int i=1; i<=N; i++){
+            if(dist[i] == K){
+                sb.append(i).append("\n");
+            }
+        }
+        
+        if(sb.length() == 0) sb.append("-1");
+        
+        bw.write(sb.toString());
+
+        bw.flush();
+        br.close();
+        bw.close();
+    }
+
+    private static void bfs() {
+        while(!que.isEmpty()){
+            Integer i = que.poll();
+
+            for(Integer nextI : adj.get(i)){
+                if(dist[nextI] == -1){
+                    dist[nextI] = dist[i] + 1;
+                    que.offer(nextI);
+                }
+            }
+        }
+    }
+}
