@@ -1,0 +1,107 @@
+// 머리가 일을 안 해서 멈춤 수정 필요..
+
+import java.io.*;
+
+public class Main {
+    private static BufferedReader br;
+    private static BufferedWriter bw;
+
+    public static void main(String[] args) throws IOException {
+        br = new BufferedReader(new InputStreamReader(System.in));
+        bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        while(true){
+            String password = br.readLine();
+            if(password.equals("end")) break;
+
+            boolean flag = false;
+            if(isPossible1(password)) {
+                if(isPossible2(password)) {
+                    if (isPossible3(password)) {
+                        flag = true;
+                    }
+                }
+            }
+
+            if(flag){
+                bw.write(possibleString(password)+"\n");
+            } else{
+                bw.write(impossibleString(password)+"\n");
+            }
+        }
+
+        bw.flush();
+        br.close();
+        bw.close();
+    }
+
+    // 1. 모음(a,e,i,o,u) 하나를 반드시 포함하여야 한다.
+    private static boolean isPossible1(String password) {
+        String[] vowels = {"a", "e", "i", "o", "u"};
+        for (int i = 0; i < 5; i++) {
+            if (!password.contains(vowels[i])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // 2. 모음이 3개 혹은 자음이 3개 연속으로 오면 안 된다.
+    private static boolean isPossible2(String password) {
+        int vowelCnt = 0; // 모음 Cnt
+        int consoCnt = 0; // 자음 Cnt
+        for(char c : password.toCharArray()){
+            if(c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u'){
+                consoCnt = 0;
+                vowelCnt += 1;
+            } else{
+                vowelCnt = 0;
+                consoCnt += 1;
+            }
+
+            if(vowelCnt == 3 || consoCnt == 3){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // 3. 같은 글자가 연속적으로 두번 오면 안되나, ee 와 oo는 허용한다.
+    private static boolean isPossible3(String password) {
+        if(password.length() == 1) return true;
+
+        for(int i=0; i<password.length()-1; i++){
+            char fir = password.charAt(i);
+            char sec = password.charAt(i+1);
+
+            if(fir == sec) {
+                if(fir != 'e' && fir != 'o')
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static String possibleString(String password) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("<");
+        sb.append(password);
+        sb.append("> is acceptable.");
+
+        return sb.toString();
+    }
+
+    private static String  impossibleString(String password) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("<");
+        sb.append(password);
+        sb.append("> is not acceptable.");
+
+        return sb.toString();
+    }
+}
