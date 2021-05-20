@@ -1,6 +1,7 @@
-// 머리가 일을 안 해서 멈춤 수정 필요..
+// 외않되;;;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class Main {
     private static BufferedReader br;
@@ -10,23 +11,32 @@ public class Main {
         br = new BufferedReader(new InputStreamReader(System.in));
         bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
+        ArrayList<String> list = new ArrayList<>();
+
         while(true){
             String password = br.readLine();
+
             if(password.equals("end")) break;
+            list.add(password);
+        }
 
-            boolean flag = false;
-            if(isPossible1(password)) {
-                if(isPossible2(password)) {
-                    if (isPossible3(password)) {
-                        flag = true;
+        for(String password : list){
+            boolean flag = isPossible1(password);
+
+            if(flag) {
+                boolean flag2 = isPossible2(password);
+                if(flag2){
+                    boolean flag3 = isPossible3(password);
+                    if(flag3){
+                        bw.write(possibleString(password));
+                    }else{
+                        bw.write(impossibleString(password));
                     }
+                }else{
+                    bw.write(impossibleString(password));
                 }
-            }
-
-            if(flag){
-                bw.write(possibleString(password)+"\n");
-            } else{
-                bw.write(impossibleString(password)+"\n");
+            }else{
+                bw.write(impossibleString(password));
             }
         }
 
@@ -37,12 +47,10 @@ public class Main {
 
     // 1. 모음(a,e,i,o,u) 하나를 반드시 포함하여야 한다.
     private static boolean isPossible1(String password) {
-        String[] vowels = {"a", "e", "i", "o", "u"};
-        for (int i = 0; i < 5; i++) {
-            if (!password.contains(vowels[i])) {
-                return false;
-            }
-        }
+        if(!password.contains("a") || !password.contains("e") ||
+        !password.contains("i") || !password.contains("o") || !password.contains("u")) return false;
+
+        System.out.println("1");
 
         return true;
     }
@@ -51,6 +59,7 @@ public class Main {
     private static boolean isPossible2(String password) {
         int vowelCnt = 0; // 모음 Cnt
         int consoCnt = 0; // 자음 Cnt
+        System.out.println("2");
         for(char c : password.toCharArray()){
             if(c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u'){
                 consoCnt = 0;
@@ -72,16 +81,15 @@ public class Main {
     private static boolean isPossible3(String password) {
         if(password.length() == 1) return true;
 
+        System.out.println("3");
         for(int i=0; i<password.length()-1; i++){
             char fir = password.charAt(i);
             char sec = password.charAt(i+1);
 
-            if(fir == sec) {
-                if(fir != 'e' && fir != 'o')
+            if(fir == sec && fir != 'e' && fir != 'o') {
                     return false;
             }
         }
-
         return true;
     }
 
@@ -90,7 +98,7 @@ public class Main {
 
         sb.append("<");
         sb.append(password);
-        sb.append("> is acceptable.");
+        sb.append("> is acceptable.\n");
 
         return sb.toString();
     }
@@ -100,7 +108,96 @@ public class Main {
 
         sb.append("<");
         sb.append(password);
-        sb.append("> is not acceptable.");
+        sb.append("> is not acceptable.\n");
+
+        return sb.toString();
+    }
+}
+
+// 이렇게 오래 걸릴 문제는 아니였음
+import java.io.*;
+
+public class Main {
+    private static BufferedReader br;
+    private static BufferedWriter bw;
+
+    public static void main(String[] args) throws IOException {
+        br = new BufferedReader(new InputStreamReader(System.in));
+        bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        while (true){
+            String password = br.readLine();
+            if(password.equals("end")) break;
+
+            if(isPossible(password)) bw.write(possibleString(password));
+            else bw.write(impossibleString(password));
+        }
+
+        bw.flush();
+        br.close();
+        bw.close();
+    }
+
+    // 1. 모음(a,e,i,o,u) 하나를 반드시 포함하여야 한다.
+    // 2. 모음이 3개 혹은 자음이 3개 연속으로 오면 안 된다.
+    // 3. 같은 글자가 연속적으로 두번 오면 안되나, ee 와 oo는 허용한다.
+
+    private static boolean isPossible(String password) {
+        char fir = 'A'; // 어차피 소문자니까 대문자와 같을리가 없으니 A로 초기화
+        int totalVowelCnt = 0; // 총 모음 개수
+        int colsonCnt = 0; // 자음 개수
+        int vowelCnt = 0; // 모음 개수
+
+        for(int i=0; i<password.length(); i++){
+            char sec = password.charAt(i);
+            if(isSame(fir, sec)) return false;
+            if(isVowel(sec)){
+                vowelCnt += 1;
+                totalVowelCnt += 1;
+                if(vowelCnt == 3) return false;
+                colsonCnt = 0;
+            }else{
+                colsonCnt += 1;
+                if(colsonCnt == 3) return false;
+                vowelCnt = 0;
+            }
+            fir = sec;
+        }
+        if(totalVowelCnt == 0) return false;
+
+        return true;
+    }
+
+    private static boolean isSame(char preChar, char curChar) {
+        if(preChar == curChar && curChar != 'e' && curChar != 'o') return true;
+        return false;
+    }
+
+    private static boolean isVowel(char alpha) {
+        char[] vowels = {'a', 'e', 'i', 'o', 'u'};
+
+        for(char vowel : vowels)
+            if(vowel == alpha) return true;
+
+        return false;
+    }
+
+    private static String possibleString(String password) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("<");
+        sb.append(password);
+        sb.append("> is acceptable.\n");
+
+        return sb.toString();
+    }
+
+    private static String  impossibleString(String password) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("<");
+        sb.append(password);
+        sb.append("> is not acceptable.\n");
 
         return sb.toString();
     }
