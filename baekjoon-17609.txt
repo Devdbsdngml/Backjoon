@@ -1,0 +1,57 @@
+import java.io.*;
+
+public class Main {
+    private static BufferedReader br;
+    private static BufferedWriter bw;
+
+    public static void main(String[] args) throws IOException {
+        br = new BufferedReader(new InputStreamReader(System.in));
+        bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        int T = Integer.parseInt(br.readLine());
+
+        while(T-- > 0){
+            String s = br.readLine();
+
+            if(isPalin(s)) bw.write("0\n");
+            else if(isPseudoPalin(s)) bw.write("1\n");
+            else bw.write("2\n");
+        }
+
+        bw.flush();
+        br.close();
+        bw.close();
+    }
+
+    private static boolean isPseudoPalin(String s) {
+        int start = 0;
+        int end = s.length()-1;
+        int mid = (end-start+1)/2;
+
+        while(mid-- > 0){
+            if(s.charAt(start) != s.charAt(end)){
+                return isPalin(s.substring(start+1, end+1)) || isPalin(s.substring(start, end));
+            }
+            start++;
+            end--;
+        }
+
+        return true;
+    }
+
+    private static boolean isPalin(String s) {
+        int start = 0;
+        int end = s.length()-1;
+        int mid = (end-start+1)/2;
+
+        while(mid-- > 0){
+            if(s.charAt(start) != s.charAt(end))
+                return false;
+
+            start++;
+            end--;
+        }
+
+        return true;
+    }
+}
