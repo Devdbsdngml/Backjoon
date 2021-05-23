@@ -1,0 +1,110 @@
+// 첫번째 풀이 "틀렸습니다"
+// 문자열 길이가 100만이라 이중포문으로 인덱스끼리 하나하나 비교하면 TLE
+
+import java.io.*;
+
+public class Main {
+    private static BufferedReader br;
+    private static BufferedWriter bw;
+
+    public static void main(String[] args) throws IOException {
+        br = new BufferedReader(new InputStreamReader(System.in));
+        bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        /*
+        * P가 S의 부분 문자열인지?
+        * 1 <= len <= 1_000_000
+        * */
+        String S = br.readLine();
+        String P = br.readLine();
+
+        if(isPossible(S, P)) bw.write("1");
+        else bw.write("0");
+
+        bw.flush();
+        br.close();
+        bw.close();
+    }
+
+    private static boolean isPossible(String S, String P) {
+        for(int i=0; i<S.length(); i++){
+            if(S.charAt(i) == P.charAt(0)){
+                for(int j=1; j<P.length(); j++){
+                    if(S.charAt(++i) != P.charAt(j)) return false;
+                    if(i == S.length()-1 && j != P.length()-1) return false;
+                }
+            }
+        }
+        return true;
+    }
+}
+
+// KMP 알고리즘을 배웠다
+// 문자열 매칭 알고리즘이며 접두사 접미사를 가지고 배열을 만들어 일치하는 값들만 매칭하도록
+
+import java.io.*;
+
+public class Main {
+    private static BufferedReader br;
+    private static BufferedWriter bw;
+
+    static int answer = 0;
+    public static void main(String[] args) throws IOException {
+        br = new BufferedReader(new InputStreamReader(System.in));
+        bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        String S = br.readLine();
+        String P = br.readLine();
+
+        KMP(S, P);
+        bw.write(answer+"");
+
+        bw.flush();
+        br.close();
+        bw.close();
+    }
+
+    private static void KMP(String parent, String pattern) {
+        int[] table = makeTable(pattern);
+        int parentLen = parent.length();
+        int patternLen = pattern.length();
+        int j = 0;
+
+        for(int i=1; i<parentLen; i++){
+            while(j > 0 && parent.charAt(i) != pattern.charAt(j)){
+                j = table[j-1];
+            }
+            if(parent.charAt(i) == pattern.charAt(j)){
+                if(j == patternLen-1){
+                    answer = 1;
+                    break;
+                }else{
+                    j++;
+                }
+            }
+        }
+    }
+
+    private static int[] makeTable(String pattern) {
+        int patternLen = pattern.length();
+        int[] table = new int[patternLen];
+        int j = 0;
+
+        for(int i=1; i<patternLen; i++){
+            while(j > 0 && pattern.charAt(i) != pattern.charAt(j)){
+                j = table[j-1];
+            }
+            if(pattern.charAt(i) == pattern.charAt(j)){
+                table[i] = ++j;
+            }
+        }
+
+        return table;
+    }
+
+    private static void printArr(int[] table) {
+        for(int i : table)
+            System.out.print(i+" ");
+    }
+
+}
