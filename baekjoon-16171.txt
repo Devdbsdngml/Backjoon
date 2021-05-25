@@ -1,0 +1,50 @@
+// 다양하게 풀이가 가능하다
+// indexOf를 사용하거나, contains를 사용하거나, KMP 알고리즘을 사용하거나, substring으로 pattern의 길이만큼 잘라서 이퀄스 ...
+
+// indexOf 사용한 풀이
+// indexOf(String s)는 특정 문자나 문자열이 앞에서부터 검색하여 인덱스를 반환한다. 만약 찾지 못하면 -1을 반환
+// 인텔리제이에서는 contains를 권장함
+import java.io.*;
+
+public class Main {
+    private static BufferedReader br;
+    private static BufferedWriter bw;
+
+    public static void main(String[] args) throws IOException {
+        br = new BufferedReader(new InputStreamReader(System.in));
+        bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        String S = br.readLine().replaceAll("[0-9]", "");
+        String K = br.readLine();
+
+        if(S.indexOf(K) != -1) bw.write("1");
+        else bw.write("0");
+
+        bw.flush();
+        br.close();
+        bw.close();
+    }
+}
+
+// contains 사용한 풀이
+import java.io.*;
+
+public class Main {
+    private static BufferedReader br;
+    private static BufferedWriter bw;
+
+    public static void main(String[] args) throws IOException {
+        br = new BufferedReader(new InputStreamReader(System.in));
+        bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        String S = br.readLine().replaceAll("[0-9]", "");
+        String K = br.readLine();
+
+        if(S.contains(K)) bw.write("1");
+        else bw.write("0");
+
+        bw.flush();
+        br.close();
+        bw.close();
+    }
+}
