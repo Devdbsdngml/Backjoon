@@ -1,0 +1,83 @@
+// 5% 틀렸습니다..
+
+import java.io.*;
+import java.util.ArrayList;
+
+public class Main {
+    private static BufferedReader br;
+    private static BufferedWriter bw;
+
+    public static void main(String[] args) throws IOException {
+        br = new BufferedReader(new InputStreamReader(System.in));
+        bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        int T = sToInt(br.readLine());
+
+        while(T-- > 0){
+            String W = br.readLine();
+            int K = sToInt(br.readLine());
+
+            ArrayList<Integer> ansList = findAns(W, K);
+
+            if(!ansList.isEmpty()){
+                printAnsList(ansList);
+            }else{
+                bw.write("-1\n");
+            }
+        }
+
+        bw.flush();
+        br.close();
+        bw.close();
+    }
+
+    private static void printAnsList(ArrayList<Integer> ansList) {
+        for(Integer i : ansList)
+            System.out.print(i+" ");
+        System.out.println();
+    }
+
+    private static ArrayList<Integer> findAns(String w, int k) {
+        ArrayList<Integer> res = new ArrayList<>();
+        int[] alpha = new int[26]; // w의 char 알파벳 개수 담을 배열
+        int maxLen = -1;
+        int minLen = 987654321;
+        boolean flag = false;
+
+        // a to z 개수 세기
+        for(int i=0; i<w.length(); i++){
+            alpha[w.charAt(i)-'a']++;
+        }
+
+        for(int i=0; i<w.length(); i++){
+            char cur = w.charAt(i);
+            int cnt = 1;
+            if(alpha[cur - 'a'] < k) continue; // 알파벳 개수가 k 이하이면 skip
+
+            for(int j=i+1; j<w.length(); j++){
+                if(cur == w.charAt(j)){
+                    cnt++;
+                }
+
+                if(cnt == k){
+                    maxLen = Math.max(maxLen, j-i+1);
+                    minLen = Math.min(minLen, j-i+1);
+                    flag = true;
+                    break;
+                }
+            }
+        }
+
+        if(flag) {
+            res.add(minLen);
+            res.add(maxLen);
+        }
+
+        return res;
+    }
+
+    private static int sToInt(String s) {
+        return Integer.parseInt(s);
+    }
+
+}
