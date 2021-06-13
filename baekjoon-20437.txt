@@ -79,5 +79,75 @@ public class Main {
     private static int sToInt(String s) {
         return Integer.parseInt(s);
     }
+}
+
+
+
+// 위랑 로직은 같음
+import java.io.*;
+import java.util.ArrayList;
+
+public class Main {
+    private static BufferedReader br;
+    private static BufferedWriter bw;
+
+    private static ArrayList<Integer> ansList;
+
+    public static void main(String[] args) throws IOException {
+        br = new BufferedReader(new InputStreamReader(System.in));
+        bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        int T = sToInt(br.readLine());
+        StringBuilder answer = new StringBuilder();
+
+        while(T-- > 0){
+            String W = br.readLine();
+            int K = sToInt(br.readLine());
+
+            // String W의 알파벳 개수 구하기
+            int[] alphabet = new int[26];
+
+            for(int i=0; i<W.length(); i++){
+                alphabet[W.charAt(i)-'a']++;
+            }
+
+            int min = 987654321;
+            int max = -1;
+            for(int i=0; i<W.length(); i++){
+                char c = W.charAt(i);
+                int cnt = 0;
+
+                if(alphabet[c-'a'] < K) continue;
+
+                for(int j=i; j<W.length(); j++){
+                    if(c == W.charAt(j))
+                        cnt++;
+
+                    if(cnt == K){
+                        min = Math.min(min, j-i+1);
+                        max = Math.max(max, j-i+1);
+                        break;
+                    }
+                }
+            }
+
+            if(min != 987654321 || max != -1){
+                answer.append(min).append(" ");
+                answer.append(max).append("\n");
+            }else{
+                answer.append("-1").append("\n");
+            }
+        }
+
+        bw.write(answer.toString());
+
+        bw.flush();
+        br.close();
+        bw.close();
+    }
+
+    private static int sToInt(String s) {
+        return Integer.parseInt(s);
+    }
 
 }
