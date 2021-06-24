@@ -1,0 +1,53 @@
+// 맞는데 시간이 너무 오래 걸린다! 다 탐색을 하니까...
+
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    private static BufferedReader br;
+    private static BufferedWriter bw;
+
+
+    public static void main(String[] args) throws IOException {
+        br = new BufferedReader(new InputStreamReader(System.in));
+        bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        int N = Integer.parseInt(st.nextToken()); // 듣도
+        int M = Integer.parseInt(st.nextToken()); // 보도
+
+        int len = N + M;
+        int cnt = 0;
+        Map<String, Integer> hm = new HashMap<>();
+        List<String> ansList = new ArrayList<>();
+
+        while(len-- > 0){
+            String input = br.readLine();
+            if(!hm.containsKey(input)){
+                hm.put(input, 1);
+            } else{
+                cnt++;
+                hm.put(input, hm.get(input)+1);
+            }
+        }
+
+        bw.write(cnt+"\n");
+
+        hm.forEach((key, value) -> {
+            if(value == 2) {
+                ansList.add(key);
+            }
+        });
+
+        Collections.sort(ansList);
+
+        for(String ans : ansList) bw.write(ans+"\n");
+
+        bw.flush();
+        br.close();
+        bw.close();
+    }
+}
+
+// 시간을 줄여보자!
