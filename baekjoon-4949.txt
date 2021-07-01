@@ -1,0 +1,47 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    private static BufferedReader br;
+    private static BufferedWriter bw;
+
+
+    public static void main(String[] args) throws IOException {
+        br = new BufferedReader(new InputStreamReader(System.in));
+        bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        StringBuilder answer = new StringBuilder();
+
+        while(true){
+            String input = br.readLine();
+
+            if(input.equals(".")) break;
+
+            answer.append(solution(input));
+        }
+
+        bw.write(answer.toString());
+
+        bw.flush();
+        br.close();
+        bw.close();
+    }
+
+    private static String solution(String input) {
+        Stack<Character> s = new Stack<>();
+
+        for(char c : input.toCharArray()){
+            if(c == '(' || c == '['){
+                s.push(c);
+            } else if(c == ')'){
+                if(s.isEmpty() || s.pop() != '(') return "no\n";
+            } else if(c == ']'){
+                if(s.isEmpty() || s.pop() != '[') return "no\n";
+            }
+        }
+
+        return s.isEmpty() ? "yes\n" : "no\n";
+    }
+
+
+}
